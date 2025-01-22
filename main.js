@@ -1,3 +1,5 @@
+/* Toggle Button to Unmute the Video */
+
 function toggleMute() {
     var video = document.getElementById('video');
     if (video.muted) {
@@ -7,57 +9,44 @@ function toggleMute() {
     }
 }
 
+/* Delay Function to Add SetTimeOut After Defined Interval */
+
 function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+/* Show Video Function to Add Display Property to Show the Video on Click of Button which will fulfilled User Interaction Needs to Browser to Run the Video with Unmute State */
+
 function showVideo() {
-    var video = document.getElementById('video');
-    var container = document.getElementById('container');
-    video.style.display = 'block';
-    container.style.display = 'none';
+    var element = document.getElementById('video');
+    var button = document.getElementById('container');
+    element.style.display = 'block';
+    button.style.display = 'none';
     delay(100).then(() => toggleMute());
 }
 
-let hasInteracted = false;
-
 const fullscreenButton = document.getElementById('button');
-const videoElement = document.getElementById('video');
-const container = document.getElementById('container-video');
+const content = document.getElementById('container-video');
 
 fullscreenButton.addEventListener('click', () => {
-    hasInteracted = true;
-    if (container.requestFullscreen) {
-        container.requestFullscreen();
-    } else if (container.mozRequestFullScreen) {
-        container.mozRequestFullScreen();
-    } else if (container.webkitRequestFullscreen) {
-        container.webkitRequestFullscreen();
-    } else if (container.msRequestFullscreen) {
-        container.msRequestFullscreen();
+    if (content.requestFullscreen) {
+        content.requestFullscreen();
+    } else if (content.mozRequestFullScreen) { // Firefox
+        content.mozRequestFullScreen();
+    } else if (content.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        content.webkitRequestFullscreen();
+    } else if (content.msRequestFullscreen) { // Internet Explorer/Edge
+        content.msRequestFullscreen();
     }
 });
 
 document.addEventListener('fullscreenchange', () => {
     if (document.fullscreenElement) {
-        container.style.display = 'block';
+        content.style.display = 'block';
     } else {
-        container.style.display = 'block';
+        content.style.display = 'block';
     }
 });
-
-fullscreenButton.addEventListener('click', () => {
-    hasInteracted = true;
-});
-videoElement.addEventListener('click', () => {
-    hasInteracted = true;
-});
-
-window.onbeforeunload = function () {
-    if (!hasInteracted) {
-        return "Changes you made may not be saved.";
-    }
-};
 
 document.addEventListener("DOMContentLoaded", function () {
     const counterElement = document.getElementById("counter");
@@ -74,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
             clearInterval(interval);
             counterElement.style.display = "none";
             messageElement.style.display = "flex";
-            messageElementText.style.display = "flex";
+            messageElementText.style.display = "flex"
         }
     }
 
